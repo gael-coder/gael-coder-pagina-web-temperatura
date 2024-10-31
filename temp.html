@@ -1,0 +1,74 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="raphael-2.1.4.min.js"></script>
+	<script src="justgage.js"></script>
+
+	<script>
+		var accessToken = "79f854ee305ccaf94fe8473f2ff708ad38befaf5";
+		var deviceID = "e00fce68ce6885f40a76bd65";
+		var urlCelsius = "https://api.particle.io/v1/devices/" + deviceID + "/gradosC";
+		var urlFahrenheit = "https://api.particle.io/v1/devices/" + deviceID + "/gradosF";
+
+		function callbackCelsius(data, status) {
+			if (status == "success") {
+				var tempC = parseFloat(data.result).toFixed(2);
+				console.log(tempC);
+				gCelsius.refresh(tempC);
+				
+				if (tempC < 20) {
+					document.body.style.backgroundColor = "lightblue";
+				} else if (tempC >= 20 && tempC <= 40) {
+					document.body.style.backgroundColor = "orange";
+				} else if (tempC > 40) {
+					document.body.style.backgroundColor = "red";
+				}
+			} else {
+				alert("There was a problem with the Celsius API.");
+			}
+		}
+
+		function callbackFahrenheit(data, status) {
+			if (status == "success") {
+				var tempF = parseFloat(data.result).toFixed(2);
+				gFahrenheit.refresh(tempF);
+			} else {
+				alert("There was a problem with the Fahrenheit API.");
+			}
+		}
+
+		function getReading() {
+			$.get(urlCelsius, { access_token: accessToken }, callbackCelsius);
+			$.get(urlFahrenheit, { access_token: accessToken }, callbackFahrenheit);
+			setTimeout(getReading, 1000);
+		}
+	</script>
+</head>	
+
+<body>
+	<div id="gaugeCelsius" class="200x160px"></div>
+	<div id="gaugeFahrenheit" class="200x160px"></div>
+
+	<script>
+		var gCelsius = new JustGage({
+			id: "gaugeCelsius",
+			value: 0,
+			min: 0,
+			max: 100,
+			title: "Temperatura (°C)"
+		});
+
+		var gFahrenheit = new JustGage({
+			id: "gaugeFahrenheit",
+			value: 0,
+			min: 32,
+			max: 200,
+			title: "Temperatura (°F)"
+		});
+
+		getReading();
+	</script>
+</body>
+</html>
+
