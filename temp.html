@@ -67,12 +67,37 @@
 		}
 	</script>
 </head>
-
+<style>
+	.gauge-container {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: center;
+	  gap: 10px; /* Espacio entre los elementos */
+	}
+  
+	.gauge-container div {
+	  flex: 1 1 45%; /* Ocupa el 45% del ancho del contenedor */
+	  max-width: 200px; /* Tamaño máximo del ancho para cada gauge */
+	  text-align: center; /* Centra el contenido si es necesario */
+	}
+  
+	.gauge-container div:nth-child(3),
+	.gauge-container div:nth-child(4) {
+	  margin-top: 10px; /* Espacio adicional entre filas */
+	}
+  </style>
+  
 <body>
-	<div id="gaugeCelsius" style="width:200px; height:160px;"></div>
-	<div id="gaugeHumedad" style="width:200px; height:160px;"></div>
-	<div id="gaugePresion" style="width:200px; height:160px;"></div>
-	<div id="gaugeAltitud" style="width:200px; height:160px;"></div>
+	<div class="gauge-container">
+		<div id="gaugeCelsius" style="width:200px; height:160px;"></div>
+		<div id="gaugeHumedad" style="width:200px; height:160px;"></div>
+		
+	  </div>
+	  <div class="gauge-container">
+	  <div id="gaugePresion" style="width:200px; height:160px;"></div>
+		<div id="gaugeAltitud" style="width:200px; height:160px;"></div>
+	</div>
+
 
 	<script>
 		var gCelsius = new JustGage({
@@ -112,4 +137,5 @@
 	</script>
 </body>
 </html>
+
 
